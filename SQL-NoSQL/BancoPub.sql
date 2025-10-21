@@ -1,0 +1,35 @@
+CREATE TABLE IF NOT EXISTS Usuario (
+    id_usuario INT PRIMARY KEY AUTO_INCREMENT,
+    senha_hash VARCHAR(255) NOT NULL,
+    email_login VARCHAR(255) NOT NULL UNIQUE,
+    nome VARCHAR(255) NOT NULL,
+    CONSTRAINT chk_senha_tamanho CHECK (CHAR_LENGTH(senha_hash) >=8),
+    foto_de_perfil VARCHAR(255),
+    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS Produto (
+    id_produto INT PRIMARY KEY AUTO_INCREMENT,
+    valor DECIMAL(10,2) NOT NULL,
+    nome VARCHAR(255) NOT NULL,
+    imagem VARCHAR(255) NOT NULL,
+    data_criacao TIMESTAMP DEFAULT CURRENT TIMESTAMP
+    id_tipo INT,
+    FOREIGN KEY (id_tipo) REFERENCES Tipos(id_tipo)
+);
+
+CREATE TABLE IF NOT EXISTS Tipo (
+    id_tipo INT PRIMARY KEY AUTO_INCREMENT UNIQUE,
+    nome_tipo VARCHAR (255) NOT NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS Log_BD(
+    id_log INT PRIMARY KEY AUTO_INCREMENT,
+    data_evento TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    nivel VARCHAR (20) NOT NULL,
+    mensagem VARCHAR(255) NOT NULL,
+    contexto TEXT
+);
+
+CREATE INDEX idx_produto_tipo ON Produto(id_tipo);
+CREATE INDEX idx_log_nivel ON Log_BD(nivel);
